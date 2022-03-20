@@ -19,51 +19,43 @@ import java.util.Stack;
 public class MySolution {
 
     public static void main(String[] args) {
-        String s = "[][(())]";
+        String s = "){";
         System.out.println(isValid(s));
     }
 
         public static boolean isValid(String s) {
 
-        char[] charArray= s.toCharArray();
+        char[] charArray = s.toCharArray();
         if(charArray.length%2 != 0)
             return false;
 
         Stack<Character> stack = new Stack<>();
 
-            for(int i=0;i<charArray.length;i++) {
-                char top = stack.empty() ? '#' : stack.firstElement();
+        for(char charValue:charArray){
 
-                if(top == '(' && charArray[i] == ')') {
-                    stack.pop();
-                }else if(top == '{' && charArray[i] == '}') {
-                    stack.pop();
-                }else if(top == '[' && charArray[i] == ']') {
-                    stack.pop();
-                }else{
-                    stack.push(charArray[i]);
-                }
+            if(stack.isEmpty()){
+                stack.push((Character)charValue);
             }
 
-
-            try {
-                for (int i=0; i<charArray.length/2; i++){
-                    if (stack.peek().toString().equals(")") && charArray[i] == '(')
-                        stack.pop();
-                    else if (stack.peek().toString().equals("}") && charArray[i] == '{')
-                        stack.pop();
-                    else if (stack.peek().toString().equals("]") && charArray[i] == '[')
-                        stack.pop();
-                    else
-                        return false;
-                }
-            }catch (EmptyStackException e)
-            {
-                return true;
+            else if( ((Character)charValue).toString().equalsIgnoreCase("]") &&
+                    stack.peek().toString().equalsIgnoreCase("[")){
+                stack.pop();
             }
+            else if( ((Character)charValue).toString().equalsIgnoreCase("}") &&
+                    stack.peek().toString().equalsIgnoreCase("{")){
+                stack.pop();
+            }
+            else if( ((Character)charValue).toString().equalsIgnoreCase(")") &&
+                    stack.peek().toString().equalsIgnoreCase("(")){
+                stack.pop();
+            }
+            else
+                stack.push((Character)charValue);
+
+        }
 
 
-        return true;
+        return stack.isEmpty();
         }
 
 }
